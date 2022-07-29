@@ -41,7 +41,7 @@ const resolvers = {
 
         return { token, user };
     },
-    saveBook: (parent, { input }, context) => {
+    savedBook: async (parent, { input }, context) => {
         if(context.user){
             const updatedUser = await User.findOneAndUpdate(
                 { _id: context.user._id},
@@ -52,7 +52,7 @@ const resolvers = {
         }
         throw new AuthenticationError(" You must be logged in to perform this action");
     },
-    removeBook: (parent, {bookId}, context) => {
+    removeBook: async (parent, {bookId}, context) => {
         if (context.user) {
             const updatedUser = await User.findOneAndUpdate(
                 { _id: context.user._id },
