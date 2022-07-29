@@ -18,5 +18,5 @@ const typeDefs = gql`
         link: String
     }
 
-    
+
 `;
