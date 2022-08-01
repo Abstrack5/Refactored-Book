@@ -28,12 +28,14 @@ const resolvers = {
       }
 
       const correctPw = await user.isCorrectPassword(password);
+
       if (!correctPw) {
         throw new AuthenticationError("Invalid Authentication!");
       }
 
       const token = signToken(user)
       return { token, user };
+
     },
     addUser: async (parent, args) => {
         const user = await User.create(args);
@@ -46,7 +48,7 @@ const resolvers = {
             const updatedUser = await User.findOneAndUpdate(
                 { _id: context.user._id},
                 { $push: { savedBooks: input } },
-                { new: true, runValidators: true }
+                { new: true }
             );
             return updatedUser;
         }
@@ -56,10 +58,10 @@ const resolvers = {
         if (context.user) {
             const updatedUser = await User.findOneAndUpdate(
                 { _id: context.user._id },
-                { $pull: { savedBooks: { bookBeingRemovedId: bookId } } }, // if property and parameter are same name, we only need to place it once
+                // { $pull: { savedBooks: { bookBeingRemovedId: bookId } } }, // if property and parameter are same name, we only need to place it once
                 // { $pull: { savedBooks: { bookId: bookId } } },
-                // { $pull: { savedBooks: { bookId } } },
-                { new: true, runValidators: true }
+                { $pull: { savedBooks: { bookId } } },
+                { new: true }
             );
             return updatedUser;
         }
